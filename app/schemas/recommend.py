@@ -1,14 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from app.schemas.course import Course
 
 
 class RecommendRequest(BaseModel):
-    school_name: str
-    grade_name: str
-    subject_name: str
-    version_name: str | None = None
-    degree_name: str | None = None
-    goal_name: str | None = None
+    school_id: int
+    grade_id: int
+    subject_id: int
+
+    version_id: int | None = None
+    degree_id: int | None = None
+    goal_id: int | None = None
+    preference_ids: list[int] | None = None
+
+    limit: int = Field(default=3, ge=3, le=10)
 
 
 class RecommendedCourse(Course):

@@ -1,14 +1,40 @@
+from app.ai.factory import create_ai_langchain
 from app.core.config import get_settings
+from app.prompts.prompt_builder import build_prompt
+from app.prompts.prompt_type import PromptType
+from app.ai.ai_type import AiType
 
-settings = get_settings()
+
+def ask_normal(
+    system_prompt: str,
+    user_prompt: str,
+    ai_type: AiType = AiType.LMSTUDIO,
+) -> str:
+    settings = get_settings()
+    llm = create_ai_langchain(settings.ai_provider)
+
+    result = llm.chat(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+    )
+
+    return result
 
 
-def ask_ai(question: str, course_name: str | None = None) -> str:
-    if settings.ai_provider == "mock":
-        if course_name:
-            return f"針對「{course_name}」，你的問題是：{question}。目前這是 mock AI 回答。"
+def ask_ai(
+    prompt_type: PromptType,
+    question: str | None = None,
+    course: dict | None = None,
+    courses: list[dict] | None = None,
+) -> str:
+    settings = get_settings()
+    ai_client = create_ai_langchain(settings.ai_provider)
 
-        return f"你的問題是：{question}。目前這是 mock AI 回答。"
+    system_prompt, user_prompt = build_prompt(
+        prompt_type=prompt_type,
+        question=question,
+        course=course,
+        courses=courses,
+    )
 
-    # 之後可以在這裡接 Gemini / Azure OpenAI / LM Studio
-    return "尚未設定正式 AI Provider。"
+    return ai_client.chat(system_prompt, user_prompt)
