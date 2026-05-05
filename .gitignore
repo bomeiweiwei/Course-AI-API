@@ -1,0 +1,73 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虛擬環境
+.venv/
+venv/
+env/
+ENV/
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===== FastAPI / Uvicorn =====
+*.log
+logs/
+uvicorn.log
+
+# ===== 環境變數 =====
+.env
+.env.*
+!.env.example
+
+# ===== IDE =====
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== 測試 / 覆蓋率 =====
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# ===== Build / dist =====
+build/
+dist/
+*.egg-info/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== 資料庫 =====
+*.db
+*.sqlite3
+
+# ===== AI / ML =====
+vectorstore/
+chroma/
+*.faiss
+*.pkl
+
+# ===== 上傳檔案 =====
+uploads/
+data/uploads/
+
+# ===== Docker =====
+*.tar
+
+# ===== Node =====
+node_modules/
