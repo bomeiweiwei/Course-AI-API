@@ -9,3 +9,7 @@ class AskRequest(BaseModel):
 
 class AskResponse(BaseModel):
     answer: str
+
+
+class AskRecommendationRequest(AskRequest):
+    data: dict | None = None

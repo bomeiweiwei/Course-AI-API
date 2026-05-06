@@ -1,0 +1,24 @@
+{
+    "prompt_type": "test",
+    "question": "string",
+    "data": {
+        "filters": {
+            "budget": 3000,
+            "school_name": "高中",
+            "grade_name": "三年級",
+            "subject_name": "數學"
+        },
+        "course": {
+            "course_name": "高中三年級數學康軒中等班",
+            "school_name": "高中",
+            "grade_name": "三年級",
+            "subject_name": "數學",
+            "version_name": "康軒",
+            "degree_name": "中等",
+            "goal_name": "段考",
+            "price": 1447,
+            "rating": 4.9,
+            "students": 862
+        }
+    }
+}
