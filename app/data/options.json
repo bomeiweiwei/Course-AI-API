@@ -1,0 +1,856 @@
+{
+    "school_options": [
+        {
+            "parent_id": null,
+            "id": 1,
+            "name": "國小"
+        },
+        {
+            "parent_id": null,
+            "id": 2,
+            "name": "國中"
+        },
+        {
+            "parent_id": null,
+            "id": 3,
+            "name": "高中"
+        }
+    ],
+    "grade_options": [
+        {
+            "parent_id": 1,
+            "id": 11,
+            "name": "一年級"
+        },
+        {
+            "parent_id": 1,
+            "id": 12,
+            "name": "二年級"
+        },
+        {
+            "parent_id": 1,
+            "id": 13,
+            "name": "三年級"
+        },
+        {
+            "parent_id": 1,
+            "id": 14,
+            "name": "四年級"
+        },
+        {
+            "parent_id": 1,
+            "id": 15,
+            "name": "五年級"
+        },
+        {
+            "parent_id": 1,
+            "id": 16,
+            "name": "六年級"
+        },
+        {
+            "parent_id": 2,
+            "id": 17,
+            "name": "一年級"
+        },
+        {
+            "parent_id": 2,
+            "id": 18,
+            "name": "二年級"
+        },
+        {
+            "parent_id": 2,
+            "id": 19,
+            "name": "三年級"
+        },
+        {
+            "parent_id": 3,
+            "id": 20,
+            "name": "一年級"
+        },
+        {
+            "parent_id": 3,
+            "id": 21,
+            "name": "二年級"
+        },
+        {
+            "parent_id": 3,
+            "id": 22,
+            "name": "三年級"
+        }
+    ],
+    "subject_options": [
+        {
+            "parent_id": 11,
+            "id": 500,
+            "name": "國文"
+        },
+        {
+            "parent_id": 11,
+            "id": 501,
+            "name": "數學"
+        },
+        {
+            "parent_id": 11,
+            "id": 502,
+            "name": "英文"
+        },
+        {
+            "parent_id": 12,
+            "id": 503,
+            "name": "國文"
+        },
+        {
+            "parent_id": 12,
+            "id": 504,
+            "name": "數學"
+        },
+        {
+            "parent_id": 12,
+            "id": 505,
+            "name": "英文"
+        },
+        {
+            "parent_id": 13,
+            "id": 506,
+            "name": "國文"
+        },
+        {
+            "parent_id": 13,
+            "id": 507,
+            "name": "數學"
+        },
+        {
+            "parent_id": 13,
+            "id": 508,
+            "name": "英文"
+        },
+        {
+            "parent_id": 14,
+            "id": 509,
+            "name": "國文"
+        },
+        {
+            "parent_id": 14,
+            "id": 510,
+            "name": "數學"
+        },
+        {
+            "parent_id": 14,
+            "id": 511,
+            "name": "英文"
+        },
+        {
+            "parent_id": 15,
+            "id": 512,
+            "name": "國文"
+        },
+        {
+            "parent_id": 15,
+            "id": 513,
+            "name": "數學"
+        },
+        {
+            "parent_id": 15,
+            "id": 514,
+            "name": "英文"
+        },
+        {
+            "parent_id": 16,
+            "id": 515,
+            "name": "國文"
+        },
+        {
+            "parent_id": 16,
+            "id": 516,
+            "name": "數學"
+        },
+        {
+            "parent_id": 16,
+            "id": 517,
+            "name": "英文"
+        },
+        {
+            "parent_id": 17,
+            "id": 518,
+            "name": "國文"
+        },
+        {
+            "parent_id": 17,
+            "id": 519,
+            "name": "數學"
+        },
+        {
+            "parent_id": 17,
+            "id": 520,
+            "name": "英文"
+        },
+        {
+            "parent_id": 18,
+            "id": 521,
+            "name": "國文"
+        },
+        {
+            "parent_id": 18,
+            "id": 522,
+            "name": "數學"
+        },
+        {
+            "parent_id": 18,
+            "id": 523,
+            "name": "英文"
+        },
+        {
+            "parent_id": 19,
+            "id": 524,
+            "name": "國文"
+        },
+        {
+            "parent_id": 19,
+            "id": 525,
+            "name": "數學"
+        },
+        {
+            "parent_id": 19,
+            "id": 526,
+            "name": "英文"
+        },
+        {
+            "parent_id": 20,
+            "id": 527,
+            "name": "國文"
+        },
+        {
+            "parent_id": 20,
+            "id": 528,
+            "name": "數學"
+        },
+        {
+            "parent_id": 20,
+            "id": 529,
+            "name": "英文"
+        },
+        {
+            "parent_id": 21,
+            "id": 530,
+            "name": "國文"
+        },
+        {
+            "parent_id": 21,
+            "id": 531,
+            "name": "數學"
+        },
+        {
+            "parent_id": 21,
+            "id": 532,
+            "name": "英文"
+        },
+        {
+            "parent_id": 22,
+            "id": 533,
+            "name": "國文"
+        },
+        {
+            "parent_id": 22,
+            "id": 534,
+            "name": "數學"
+        },
+        {
+            "parent_id": 22,
+            "id": 535,
+            "name": "英文"
+        }
+    ],
+    "version_options": [
+        {
+            "parent_id": 500,
+            "id": 1000,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 500,
+            "id": 1001,
+            "name": "南一"
+        },
+        {
+            "parent_id": 500,
+            "id": 1002,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 501,
+            "id": 1003,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 501,
+            "id": 1004,
+            "name": "南一"
+        },
+        {
+            "parent_id": 501,
+            "id": 1005,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 502,
+            "id": 1006,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 502,
+            "id": 1007,
+            "name": "南一"
+        },
+        {
+            "parent_id": 502,
+            "id": 1008,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 503,
+            "id": 1009,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 503,
+            "id": 1010,
+            "name": "南一"
+        },
+        {
+            "parent_id": 503,
+            "id": 1011,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 504,
+            "id": 1012,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 504,
+            "id": 1013,
+            "name": "南一"
+        },
+        {
+            "parent_id": 504,
+            "id": 1014,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 505,
+            "id": 1015,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 505,
+            "id": 1016,
+            "name": "南一"
+        },
+        {
+            "parent_id": 505,
+            "id": 1017,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 506,
+            "id": 1018,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 506,
+            "id": 1019,
+            "name": "南一"
+        },
+        {
+            "parent_id": 506,
+            "id": 1020,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 507,
+            "id": 1021,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 507,
+            "id": 1022,
+            "name": "南一"
+        },
+        {
+            "parent_id": 507,
+            "id": 1023,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 508,
+            "id": 1024,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 508,
+            "id": 1025,
+            "name": "南一"
+        },
+        {
+            "parent_id": 508,
+            "id": 1026,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 509,
+            "id": 1027,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 509,
+            "id": 1028,
+            "name": "南一"
+        },
+        {
+            "parent_id": 509,
+            "id": 1029,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 510,
+            "id": 1030,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 510,
+            "id": 1031,
+            "name": "南一"
+        },
+        {
+            "parent_id": 510,
+            "id": 1032,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 511,
+            "id": 1033,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 511,
+            "id": 1034,
+            "name": "南一"
+        },
+        {
+            "parent_id": 511,
+            "id": 1035,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 512,
+            "id": 1036,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 512,
+            "id": 1037,
+            "name": "南一"
+        },
+        {
+            "parent_id": 512,
+            "id": 1038,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 513,
+            "id": 1039,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 513,
+            "id": 1040,
+            "name": "南一"
+        },
+        {
+            "parent_id": 513,
+            "id": 1041,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 514,
+            "id": 1042,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 514,
+            "id": 1043,
+            "name": "南一"
+        },
+        {
+            "parent_id": 514,
+            "id": 1044,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 515,
+            "id": 1045,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 515,
+            "id": 1046,
+            "name": "南一"
+        },
+        {
+            "parent_id": 515,
+            "id": 1047,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 516,
+            "id": 1048,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 516,
+            "id": 1049,
+            "name": "南一"
+        },
+        {
+            "parent_id": 516,
+            "id": 1050,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 517,
+            "id": 1051,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 517,
+            "id": 1052,
+            "name": "南一"
+        },
+        {
+            "parent_id": 517,
+            "id": 1053,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 518,
+            "id": 1054,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 518,
+            "id": 1055,
+            "name": "南一"
+        },
+        {
+            "parent_id": 518,
+            "id": 1056,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 519,
+            "id": 1057,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 519,
+            "id": 1058,
+            "name": "南一"
+        },
+        {
+            "parent_id": 519,
+            "id": 1059,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 520,
+            "id": 1060,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 520,
+            "id": 1061,
+            "name": "南一"
+        },
+        {
+            "parent_id": 520,
+            "id": 1062,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 521,
+            "id": 1063,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 521,
+            "id": 1064,
+            "name": "南一"
+        },
+        {
+            "parent_id": 521,
+            "id": 1065,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 522,
+            "id": 1066,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 522,
+            "id": 1067,
+            "name": "南一"
+        },
+        {
+            "parent_id": 522,
+            "id": 1068,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 523,
+            "id": 1069,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 523,
+            "id": 1070,
+            "name": "南一"
+        },
+        {
+            "parent_id": 523,
+            "id": 1071,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 524,
+            "id": 1072,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 524,
+            "id": 1073,
+            "name": "南一"
+        },
+        {
+            "parent_id": 524,
+            "id": 1074,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 525,
+            "id": 1075,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 525,
+            "id": 1076,
+            "name": "南一"
+        },
+        {
+            "parent_id": 525,
+            "id": 1077,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 526,
+            "id": 1078,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 526,
+            "id": 1079,
+            "name": "南一"
+        },
+        {
+            "parent_id": 526,
+            "id": 1080,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 527,
+            "id": 1081,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 527,
+            "id": 1082,
+            "name": "南一"
+        },
+        {
+            "parent_id": 527,
+            "id": 1083,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 528,
+            "id": 1084,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 528,
+            "id": 1085,
+            "name": "南一"
+        },
+        {
+            "parent_id": 528,
+            "id": 1086,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 529,
+            "id": 1087,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 529,
+            "id": 1088,
+            "name": "南一"
+        },
+        {
+            "parent_id": 529,
+            "id": 1089,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 530,
+            "id": 1090,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 530,
+            "id": 1091,
+            "name": "南一"
+        },
+        {
+            "parent_id": 530,
+            "id": 1092,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 531,
+            "id": 1093,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 531,
+            "id": 1094,
+            "name": "南一"
+        },
+        {
+            "parent_id": 531,
+            "id": 1095,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 532,
+            "id": 1096,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 532,
+            "id": 1097,
+            "name": "南一"
+        },
+        {
+            "parent_id": 532,
+            "id": 1098,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 533,
+            "id": 1099,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 533,
+            "id": 1100,
+            "name": "南一"
+        },
+        {
+            "parent_id": 533,
+            "id": 1101,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 534,
+            "id": 1102,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 534,
+            "id": 1103,
+            "name": "南一"
+        },
+        {
+            "parent_id": 534,
+            "id": 1104,
+            "name": "康軒"
+        },
+        {
+            "parent_id": 535,
+            "id": 1105,
+            "name": "翰林"
+        },
+        {
+            "parent_id": 535,
+            "id": 1106,
+            "name": "南一"
+        },
+        {
+            "parent_id": 535,
+            "id": 1107,
+            "name": "康軒"
+        }
+    ],
+    "degree_options": [
+        {
+            "parent_id": null,
+            "id": 1,
+            "name": "基礎弱"
+        },
+        {
+            "parent_id": null,
+            "id": 2,
+            "name": "中等"
+        },
+        {
+            "parent_id": null,
+            "id": 3,
+            "name": "進階"
+        }
+    ],
+    "goal_options": [
+        {
+            "parent_id": null,
+            "id": 1,
+            "name": "段考"
+        },
+        {
+            "parent_id": null,
+            "id": 2,
+            "name": "學測"
+        },
+        {
+            "parent_id": null,
+            "id": 3,
+            "name": "會考"
+        }
+    ],
+    "preferences_options": [
+        {
+            "parent_id": null,
+            "id": 1,
+            "name": "影片短"
+        },
+        {
+            "parent_id": null,
+            "id": 2,
+            "name": "題目多"
+        },
+        {
+            "parent_id": null,
+            "id": 3,
+            "name": "老師講解清楚"
+        }
+    ]
+}
