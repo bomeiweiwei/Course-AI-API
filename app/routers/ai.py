@@ -1,27 +1,22 @@
 from fastapi import APIRouter
-from app.schemas.ai import NormalAskRequest, AskRequest, AskResponse
-from app.services.ai_service import ask_ai, ask_normal
+from app.schemas.ai import AskRequest, AskResponse
+from app.services.ai_service import ask_ai
+from app.prompts.prompt_type import PromptType
 
 router = APIRouter()
 
-
-# @router.post("/normalask", response_model=AskResponse)
-# def ask(request: NormalAskRequest):
-#     answer = ask_normal(
-#         system_prompt=request.system_prompt,
-#         user_prompt=request.user_prompt,
-#     )
-
-#     return AskResponse(answer=answer)
-
-
-@router.post("/ask")
-def ask(request: AskRequest):
+@router.post("/test1")
+def test1(request: AskRequest):
     answer = ask_ai(
-        prompt_type=request.prompt_type,
-        question=request.question,
-        course=request.course,
-        courses=request.courses,
+        prompt_type=PromptType.TEST,
+        question=request.question
     )
-
     return {"answer": answer}
+
+@router.post("/test2", response_model=AskResponse)
+def test2(request: AskRequest):
+    answer = ask_ai(
+        prompt_type=PromptType.TEST,
+        question=request.question
+    )
+    return AskResponse(answer=answer)
