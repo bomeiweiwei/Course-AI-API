@@ -16,7 +16,7 @@ def get_courses():
 def get_filtered_courses(
     school_id: int = Query(...),
     grade_id: int = Query(...),
-    subject_id: int | None = Query(None),
+    subject_id: int = Query(...),
     version_id: int | None = Query(None),
     degree_id: int | None = Query(None),
     goal_id: int | None = Query(None),

@@ -38,7 +38,7 @@ def filter_courses(
         if course["grade_id"] != grade_id:
             continue
 
-        if subject_id is not None and course["subject_id"] != subject_id:
+        if course["subject_id"] != subject_id:
             continue
 
         if version_id is not None and course["version_id"] != version_id:
