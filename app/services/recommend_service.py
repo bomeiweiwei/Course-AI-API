@@ -1,65 +1,74 @@
 from app.schemas.recommend import RecommendRequest
 from app.services.course_service import filter_courses, get_all_courses
-
+from app.enums.sys_preference import SysPreference
 
 def calculate_score(course: dict, request: RecommendRequest) -> float:
     score = 0
 
-    # 基礎品質分數
-    score += course["rating"] * 20
+    rating = course.get("rating", 0)
+    students = course.get("students", 0)
+    price = course.get("price", 0)
 
-    # 報名人數加分，上限 20
-    score += min(course["students"] / 100, 20)
+    budget = request.budget
+    preferences = request.preference_ids
 
-    # 版本符合
-    if request.version_id is not None and course["version_id"] == request.version_id:
+    # 基礎分：評價，最核心權重
+    # 4.8 星 → +48 分
+    # 4.2 星 → +42 分
+    score += float(rating) * 10
+
+    # 報名人數分，很多人買有一定品質
+    if students >= 1000:
+        score += 20
+    elif students >= 500:
+        score += 15
+    elif students >= 100:
         score += 10
 
-    # 程度符合
-    if request.degree_id is not None and course["degree_id"] == request.degree_id:
-        score += 15
+    # 預算分，價格符合度
+    if budget and price <= budget:
+        score += 20
+    elif budget and price <= budget * 1.2:
+        score += 10
 
-    # 目標符合
-    if request.goal_id is not None and course["goal_id"] == request.goal_id:
-        score += 15
+    # 偏好加權
+    if SysPreference.VIDEO_SHORT.code in preferences:
+        if SysPreference.VIDEO_SHORT.code in course.get("preferences", []):
+            score += 5
 
-    # 偏好符合，多個偏好可累加
-    if request.preference_ids:
-        matched_preferences = set(request.preference_ids) & set(course["preferences"])
-        score += len(matched_preferences) * 8
+    if SysPreference.QUESTION_MORE.code in preferences:
+        if SysPreference.QUESTION_MORE.code in course.get("preferences", []):
+            score += 5
 
-    # 價格加分：價格越低加一點分
-    if course["price"] <= 1500:
-        score += 8
-    elif course["price"] <= 2500:
-        score += 4
+    if SysPreference.TEACHER_GOOD.code in preferences:
+        if SysPreference.TEACHER_GOOD.code in course.get("preferences", []):
+            score += 5
 
     return round(score, 1)
 
 def build_reason(course: dict, request: RecommendRequest) -> str:
     reasons = []
 
-    reasons.append(f"評價 {course['rating']} 分")
-    reasons.append(f"已有 {course['students']:,} 人報名")
+    rating = course.get("rating", 0)
+    students = course.get("students", 0)
+    price = course.get("price", 0)
+    budget = request.budget
 
-    if request.version_id is not None and course["version_id"] == request.version_id:
-        reasons.append(f"符合版本：{course['version_name']}")
+    if rating >= 4.5:
+        reasons.append("評價表現良好")
 
-    if request.degree_id is not None and course["degree_id"] == request.degree_id:
-        reasons.append(f"符合程度：{course['degree_name']}")
+    if students >= 1000:
+        reasons.append("報名人數多，課程受歡迎")
+    elif students >= 500:
+        reasons.append("已有一定報名人數")
 
-    if request.goal_id is not None and course["goal_id"] == request.goal_id:
-        reasons.append(f"符合目標：{course['goal_name']}")
+    if budget and price <= budget:
+        reasons.append("價格符合預算")
+    elif budget and price <= budget * 1.2:
+        reasons.append("價格略高於預算，但仍可考慮")
 
-    if request.preference_ids:
-        matched_preferences = set(request.preference_ids) & set(course["preferences"])
-        if matched_preferences:
-            reasons.append(f"符合 {len(matched_preferences)} 個學習偏好")
-
-    if course["price"] <= 1500:
-        reasons.append("價格相對低")
-    elif course["price"] <= 2500:
-        reasons.append("價格中等")
+    if not reasons:
+        reasons.append("符合目前基本篩選條件")
 
     return "、".join(reasons)
 
@@ -78,13 +87,13 @@ def recommend_courses(request: RecommendRequest) -> list[dict]:
 
     for course in filtered_courses:
         item = course.copy()
-        item["score"] = calculate_score(course, request)
-        item["reason"] = build_reason(course, request)
+        item["recommend_score"] = calculate_score(course, request)
+        item["recommend_reasons"] = build_reason(course, request)
         results.append(item)
 
     sorted_results = sorted(
         results,
-        key=lambda x: x["score"],
+        key=lambda x: x["recommend_score"],
         reverse=True
     )
 

@@ -10,9 +10,9 @@ class RecommendRequest(BaseModel):
     version_id: int | None = None
     degree_id: int | None = None
     goal_id: int | None = None
-    preference_ids: list[int] | None = None
-
+    budget: int
     limit: int = Field(default=3, ge=3, le=10)
+    preference_ids: list[int] | None = None
 
 
 class RecommendedCourse(Course):
