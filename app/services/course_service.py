@@ -26,7 +26,7 @@ def filter_courses(
     version_id: int | None = None,
     degree_id: int | None = None,
     goal_id: int | None = None,
-    preference_ids: List[int] | None = None,
+    preference_ids: list[int] | None = None,
 ):
     results = []
 

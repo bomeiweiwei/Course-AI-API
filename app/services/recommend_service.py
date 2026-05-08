@@ -81,6 +81,10 @@ def recommend_courses(request: RecommendRequest) -> list[dict]:
         school_id=request.school_id,
         grade_id=request.grade_id,
         subject_id=request.subject_id,
+        version_id=request.version_id,
+        degree_id=request.degree_id,
+        goal_id=request.goal_id,
+        # preference_ids=request.preference_ids
     )
 
     results = []
