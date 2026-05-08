@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from app.services.course_service import get_all_courses, filter_courses
+from app.services.textbook_service import get_textbook_knowledge
 from typing import List
 
 router = APIRouter()
@@ -22,10 +23,6 @@ def get_filtered_courses(
     goal_id: int | None = Query(None),
     preference_ids: List[int] | None = Query(None), 
 ):
-    """
-    測試用：直接用 query string 做 filter
-    """
-
     courses = get_all_courses()
 
     filtered = filter_courses(
@@ -42,4 +39,15 @@ def get_filtered_courses(
     return {
         "count": len(filtered),
         "data": filtered
+    }
+
+@router.get("/content")
+def get_course_content(
+    subject_name: str = Query(...),
+    version_name: str = Query(...),
+):
+    content = get_textbook_knowledge(subject_name, version_name)
+
+    return {
+        "data": content
     }
