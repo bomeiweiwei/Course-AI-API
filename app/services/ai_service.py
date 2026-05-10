@@ -21,7 +21,7 @@ def ask_ai(
 def ask_ai_course_recommendation(
     data: dict
 ) -> str:
-    final_ai_provider = AiType.LMSTUDIO
+    final_ai_provider = AiType.GEMINI
 
     ai_client = create_ai_langchain(final_ai_provider)
 
