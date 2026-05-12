@@ -1,14 +1,113 @@
 # Course AI API
 
-## Environment
+FastAPI backend service for the 「線上課程智能推薦顧問」 project.
 
-- Python 3.12+
-- FastAPI
-- Uvicorn
+This project provides:
+
+- Course data API
+- Course filter API
+- Recommendation API
+- AI recommendation analysis
+- Streamlit frontend integration
+- Docker deployment support
+- GCP Cloud Run deployment support
 
 ---
 
-## Install
+# Tech Stack
+
+- Python 3.12.13
+- FastAPI
+- Uvicorn
+- Pydantic
+- Docker
+- Google Gemini API
+- LM Studio
+- GCP Cloud Run
+
+---
+
+# Project Structure
+
+```bash
+course-api/
+│
+├── app/
+│   ├── api/
+│   ├── services/
+│   ├── models/
+│   ├── prompts/
+│   ├── utils/
+│   ├── data/
+│   └── main.py
+│
+├── requirements.txt
+├── Dockerfile
+├── .env
+└── README.md
+```
+
+---
+
+# Create Environment (Optional)
+
+## Conda
+
+```bash
+conda create -n your-env-name python=3.12.13
+
+conda activate your-env-name
+```
+
+---
+
+## venv
+
+### Windows CMD
+
+```bash
+python -m venv venv
+
+venv\Scripts\activate
+```
+
+---
+
+### Windows PowerShell
+
+```powershell
+python -m venv venv
+
+.\venv\Scripts\Activate.ps1
+```
+
+---
+
+### macOS / Linux
+
+```bash
+python -m venv venv
+
+source venv/bin/activate
+```
+
+---
+
+# Check Python Version
+
+```bash
+python -V
+```
+
+Expected:
+
+```bash
+Python 3.12.13
+```
+
+---
+
+# Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -16,171 +115,169 @@ pip install -r requirements.txt
 
 ---
 
-## Environment Variables
-
-Create `.env` from `.env.example`
-
-```bash
-copy .env.example .env
-```
-
-Example `.env.example`
-
-```env
-APP_NAME=Course AI API
-
-AI_PROVIDER=lmstudio
-
-GEMINI_API_KEY=
-GEMINI_MODEL_NAME=gemini-1.5-flash
-
-LMSTUDIO_BASE_URL=http://localhost:1234/v1
-LMSTUDIO_MODEL_NAME=local-model
-
-AZURE_OPENAI_API_KEY=
-AZURE_OPENAI_ENDPOINT=
-```
-
----
-
-## Run
+# Run Local Development Server
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
----
+Default URL:
 
-## Swagger API Docs
+```bash
+http://127.0.0.1:8000
+```
 
-```text
+Swagger UI:
+
+```bash
 http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## Project Structure
+# API Examples
 
-```text
-course-ai-api/
-│
-├── app/
-│   ├── ai/
-│   ├── core/
-│   ├── data/
-│   ├── models/
-│   ├── prompts/
-│   ├── routers/
-│   ├── schemas/
-│   ├── services/
-│   └── main.py
-│
-├── .env
-├── .env.example
-├── .gitignore
-├── README.md
-└── requirements.txt
+## Get Schools
+
+```http
+GET /api/options/schools
+```
+
+Example:
+
+```bash
+curl http://127.0.0.1:8000/api/options/schools
 ```
 
 ---
 
-## API Routes
+## Get Courses
 
-### Root
-
-```text
-GET /
+```http
+GET /api/courses
 ```
 
-### Course
+---
 
-```text
-GET /api/courses
+## Filter Courses
+
+```http
 GET /api/courses/filter
 ```
 
-### Recommend
+Example:
 
-```text
-POST /api/recommend
-```
-
-### Options
-
-```text
-GET /api/options
-GET /api/options/schools
-GET /api/options/grades
-GET /api/options/subjects
-GET /api/options/versions
-GET /api/options/degrees
-GET /api/options/goals
-GET /api/options/preferences
+```bash
+curl "http://127.0.0.1:8000/api/courses/filter?school_id=1&grade_id=11&subject_id=500"
 ```
 
 ---
 
-## API Example
+# Environment Variables
 
-### Get Schools
+## Gemini
 
-```text
-GET /api/options/schools
-```
+```env
+APP_NAME=Course AI API
 
-### Get Grades
-
-```text
-GET /api/options/grades?school_id=1
-```
-
-### Get Subjects
-
-```text
-GET /api/options/subjects?grade_id=11
-```
-
-### Get Versions
-
-```text
-GET /api/options/versions?subject_id=500
-```
-
-### Get Courses
-
-```text
-GET /api/courses
-```
-
-### Filter Courses
-
-```text
-GET /api/courses/filter?school_id=1&grade_id=11
-```
-
-### Recommend
-
-```text
-POST /api/recommend
-```
-
-```json
-{
-  "school_id": 1,
-  "grade_id": 11,
-  "subject_id": 500,
-  "version_id": 1000,
-  "degree_id": 2,
-  "goal_id": 3,
-  "preference_ids": [1, 2],
-  "limit": 5
-}
+AI_PROVIDER=gemini
+GEMINI_API_KEY=YOUR_API_KEY
+GEMINI_MODEL_NAME=gemini-3-flash-preview
 ```
 
 ---
 
-## Notes
+## LM Studio
 
-- JSON is currently used as mock data source
-- Backend framework uses FastAPI
-- Frontend integration planned with Streamlit
+```env
+APP_NAME=Course AI API
+
+AI_PROVIDER=lmstudio
+LMSTUDIO_BASE_URL=http://localhost:1234/v1
+LMSTUDIO_MODEL_NAME=gemma-3-12b-it
+```
+
+---
+
+# Docker Build
+
+```bash
+docker build -t course-api:latest .
+```
+
+---
+
+# Docker Run
+
+## Use LM Studio
+
+```bash
+docker run --rm -p 8000:8080 ^
+  -e PORT=8080 ^
+  -e APP_NAME="Course AI API" ^
+  -e AI_PROVIDER=lmstudio ^
+  -e LMSTUDIO_BASE_URL=http://host.docker.internal:1234/v1 ^
+  -e LMSTUDIO_MODEL_NAME=gemma-3-12b-it ^
+  course-api
+```
+
+---
+
+## Use Gemini
+
+```bash
+docker run --rm -p 8000:8080 ^
+  -e PORT=8080 ^
+  -e APP_NAME="Course AI API" ^
+  -e AI_PROVIDER=gemini ^
+  -e GEMINI_API_KEY=YOUR-KEY ^
+  -e GEMINI_MODEL_NAME=gemini-3-flash-preview ^
+  course-api
+```
+
+---
+
+# GCP Cloud Run Deploy
+
+```bash
+gcloud run deploy fastapi-service ^
+  --image asia-east1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY/course-api:latest ^
+  --platform managed ^
+  --region asia-east1 ^
+  --allow-unauthenticated ^
+  --port 8000 ^
+  --set-env-vars "APP_NAME=Course AI API,AI_PROVIDER=gemini,GEMINI_MODEL_NAME=gemini-3-flash-preview" ^
+  --set-secrets "GEMINI_API_KEY=gemini-key:latest"
+```
+
+---
+
+# Features
+
+- Course recommendation API
+- AI recommendation analysis
+- Dynamic filter options
+- Streamlit frontend integration
+- Docker support
+- Cloud Run deployment
+- Gemini AI support
+- LM Studio local AI support
+
+---
+
+# Future Plans
+
+- Vector Search integration
+- RAG architecture
+- Azure AI Search integration
+- Azure OpenAI integration
+- SQL Database integration
+- User behavior analysis
+- AI conversation memory
+- Recommendation optimization
+
+---
+
+# License
+
+This project is for learning and personal portfolio use.
