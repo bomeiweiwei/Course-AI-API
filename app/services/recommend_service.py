@@ -1,6 +1,9 @@
 from app.schemas.recommend import RecommendRequest
 from app.services.course_service import filter_courses, get_all_courses
 from app.enums.sys_preference import SysPreference
+from fastapi.responses import StreamingResponse
+import csv
+import io
 
 def calculate_score(course: dict, request: RecommendRequest) -> float:
     score = 0
@@ -102,3 +105,44 @@ def recommend_courses(request: RecommendRequest) -> list[dict]:
     )
 
     return sorted_results[:request.limit]
+
+def export_recommend_csv(courses):
+    output = io.StringIO()
+
+    # utf-8-sig：讓 Excel 開啟中文不亂碼
+    output.write("\ufeff")
+
+    writer = csv.writer(output)
+
+    writer.writerow([
+        "排名",
+        "課程名稱",
+        
+        "目標",
+        "價格",
+        "評價",
+        "報名人數",
+        "推薦分數"
+    ])
+
+    for index, course in enumerate(courses, start=1):
+        writer.writerow([
+            index,
+            course.get("course_name", ""),
+            
+            course.get("goal_name", ""),
+            course.get("price", ""),
+            course.get("rating", ""),
+            course.get("students", ""),
+            course.get("recommend_score", "")
+        ])
+
+    output.seek(0)
+
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename=recommend_courses.csv"
+        }
+    )
