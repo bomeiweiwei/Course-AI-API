@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.core.config import get_settings
-from app.routers import courses, recommend, ai
+from app.routers import courses, recommend, ai, voice
 from app.routers import options
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,6 +12,7 @@ app.include_router(courses.router, prefix="/api/courses", tags=["Courses"])
 app.include_router(recommend.router, prefix="/api/recommend", tags=["Recommend"])
 app.include_router(ai.router, prefix="/api/ai", tags=["AI"])
 app.include_router(options.router, prefix="/api/options", tags=["Options"])
+app.include_router(voice.router, prefix="/api/voice", tags=["Voice"])
 
 origins = [
     "http://localhost:8501",
