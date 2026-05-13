@@ -7,3 +7,4 @@ pydantic_settings==2.14.0
 uvicorn[standard]
 python-dotenv
 requests
+google-cloud-speech
