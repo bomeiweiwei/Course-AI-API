@@ -8,3 +8,4 @@ uvicorn[standard]
 python-dotenv
 requests
 google-cloud-speech
+python-multipart
