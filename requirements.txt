@@ -9,3 +9,4 @@ python-dotenv
 requests
 google-cloud-speech
 python-multipart
+google-genai
