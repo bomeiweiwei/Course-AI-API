@@ -4,7 +4,8 @@ import os
 import uuid
 import subprocess
 from fastapi import UploadFile, HTTPException
-from google.cloud import speech
+from app.core.config import get_settings
+import google.generativeai as genai
 
 TEMP_DIR = "/tmp/voice"
 
@@ -12,80 +13,51 @@ TEMP_DIR = "/tmp/voice"
 async def get_voice_text(file: UploadFile):
     os.makedirs(TEMP_DIR, exist_ok=True)
 
+    settings = get_settings()
+    genai.configure(api_key=settings.gemini_api_key)
+
     file_id = str(uuid.uuid4())
-    input_path = f"{TEMP_DIR}/{file_id}_input"
-    output_path = f"{TEMP_DIR}/{file_id}_output.wav"
+    # 這裡保留原檔名後綴，讓 Gemini 更好辨識檔案類型（前端傳入 "audio.wav"）
+    extension = file.filename.split(".")[-1] if file.filename else "wav"
+    input_path = f"{TEMP_DIR}/{file_id}.{extension}"
+
     try:
-
-        # 1. 初始化 Client
-        client = speech.SpeechClient()
-        # print('client ok', type(client))
-
-        # 2. 讀取檔案
+        # 1. 讀取前端傳入的 bytes
         content = await file.read()
-        # print(f"DEBUG: Received content size: {len(content)} bytes")
+        
         if len(content) < 2000:
             return {"transcript": "（音訊資料過短）"}
-        # 2-1. 先把手機/電腦上傳的原始音檔暫存
+
+        # 2. 暫存檔案（Gemini API 上傳本地檔案時需要實體路徑或透過 Files API）
         with open(input_path, "wb") as f:
             f.write(content)
-        # 2-2. 用 ffmpeg 統一轉成 WAV / LINEAR16 / 16000Hz / mono
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-y",
-                "-i",
-                input_path,
-                "-ac",
-                "1",
-                "-ar",
-                "16000",
-                "-f",
-                "wav",
-                output_path,
-            ],
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
 
-        with open(output_path, "rb") as f:
-            audio_content = f.read()
-        if len(audio_content) < 2000:
-            return {"transcript": "（轉檔後音訊資料過短）"}
+        # 3. 使用 Gemini Files API 上傳音訊檔案
+        # 註：Gemini 1.5 支援直接傳入音訊檔案進行多模態推理
+        audio_file = genai.upload_file(path=input_path)
 
-        audio = speech.RecognitionAudio(content=audio_content)
+        # 4. 初始化 Gemini 模型並進行語音辨識
+        # 轉錄語音使用速度快且便宜的 gemini-1.5-flash 效果就非常卓越
+        model = genai.GenerativeModel(settings.gemini_model_name)
+        
+        prompt = "請將這段語音檔案精準轉換為逐字稿，使用繁體中文（台灣），並自動加上標點符號。如果裡面沒有人說話或無法辨識，請直接回傳「（未偵測到語音）」，不要輸出其他多餘的解釋。"
+        
+        response = model.generate_content([prompt, audio_file])
+        
+        result_data = response.text.strip() if response.text else "（未偵測到語音）"
+        print("Gemini result_data:", result_data)
 
-        # 3. 根據錄音格式設定 Config
-        config = speech.RecognitionConfig(
-            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=16000,
-            audio_channel_count=1,
-            language_code="zh-TW",
-            max_alternatives=1,
-            enable_automatic_punctuation=True,
-        )
+        # 5. 清理 Gemini 雲端的暫存檔案（良好的檔案管理習慣）
+        audio_file.delete()
 
-        response = client.recognize(config=config, audio=audio)
-        # 務必檢查 response.results 是否存在，否則存取 [0] 會報 500 錯誤
-        if not response.results:
-            return {"transcript": "（未偵測到語音）"}
-        result_data = response.results[0].alternatives[0].transcript
-        print("result_data", result_data)
-        # 取得辨識結果
+        # 取得辨識結果，維持與原本相同的回傳格式
         return {"transcript": result_data}
 
-    except subprocess.CalledProcessError:
-        raise HTTPException(
-            status_code=400, detail="音訊轉檔失敗，請確認上傳的是有效音訊檔"
-        )
-
     except Exception as e:
-        print(f"DEBUG: Error during recognition: {e}")
+        print(f"DEBUG: Error during Gemini recognition: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
     finally:
-        # 辨識完成後刪除暫存檔
-        for path in [input_path, output_path]:
-            if os.path.exists(path):
-                os.remove(path)
+        # 辨識完成後刪除本地暫存檔
+        if os.path.exists(input_path):
+            os.remove(input_path)
