@@ -1,83 +1,83 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+此檔案提供 Claude Code (claude.ai/code) 在此專案中的操作指引。
 
-## Commands
+## 指令
 
-**Install dependencies:**
+**安裝相依套件：**
 ```bash
 pip install -r requirements.txt
 ```
 
-**Run development server:**
+**啟動開發伺服器：**
 ```bash
 uvicorn app.main:app --reload
 ```
-API available at http://127.0.0.1:8000, Swagger UI at http://127.0.0.1:8000/docs
+API 位址：http://127.0.0.1:8000，Swagger UI：http://127.0.0.1:8000/docs
 
-**Docker build and run:**
+**Docker 建置與執行：**
 ```bash
 docker build -t course-api:latest .
 
-# With Gemini:
+# 使用 Gemini：
 docker run --rm -p 8000:8080 -e PORT=8080 -e AI_PROVIDER=gemini -e GEMINI_API_KEY=YOUR-KEY course-api
 
-# With LM Studio:
+# 使用 LM Studio：
 docker run --rm -p 8000:8080 -e PORT=8080 -e AI_PROVIDER=lmstudio -e LMSTUDIO_BASE_URL=http://host.docker.internal:1234/v1 course-api
 ```
 
-No test or lint tooling is currently configured.
+目前尚未設定測試或程式碼檢查工具。
 
-## Architecture
+## 架構
 
-This is a FastAPI backend for an intelligent online course recommendation system (線上課程智能推薦顧問). Data is served from JSON files (no database).
+本專案為線上課程智能推薦顧問的 FastAPI 後端，資料以 JSON 檔案提供（無資料庫）。
 
-### Request Flow
+### 請求流程
 
 ```
 Router → Service → (AI Layer | Data Layer)
 ```
 
-- **Routers** (`app/routers/`): Thin HTTP handlers delegating to services
-- **Services** (`app/services/`): Business logic — filtering, scoring, AI orchestration
-- **AI Layer** (`app/ai/`): LangChain-based abstraction over Gemini and LM Studio
-- **Data** (`app/data/`): `courses.json` (course catalog) and `options.json` (hierarchical metadata for dropdowns)
+- **路由層** (`app/routers/`)：輕薄的 HTTP 處理器，委派邏輯至 Service
+- **服務層** (`app/services/`)：核心業務邏輯——篩選、評分、AI 協調
+- **AI 層** (`app/ai/`)：基於 LangChain 的抽象層，支援 Gemini 與 LM Studio
+- **資料層** (`app/data/`)：`courses.json`（課程目錄）與 `options.json`（下拉選單的階層式後設資料）
 
-### Recommendation Pipeline
+### 推薦流程
 
-1. Filter courses from `courses.json` by `school_id`, `grade_id`, `subject_id` (required) and optional `version_id`, `degree_id`, `goal_id`
-2. Score each course: rating×10 + enrollment bonus (0–20) + budget alignment (0–20) + preference match (0–5 per match)
-3. Return top N results (default 3, max 10) with a `reason` string
-4. Optionally call AI via `POST /api/ai/course/recommendation` to generate a natural-language recommendation explanation
+1. 從 `courses.json` 依 `school_id`、`grade_id`、`subject_id`（必填）及可選的 `version_id`、`degree_id`、`goal_id` 篩選課程
+2. 對每門課程評分：評分×10 + 報名人數加分（0–20）+ 預算匹配（0–20）+ 偏好吻合（每項 0–5）
+3. 回傳前 N 筆結果（預設 3 筆，最多 10 筆），附帶 `reason` 說明字串
+4. 可選擇呼叫 `POST /api/ai/course/recommendation` 透過 AI 產生自然語言推薦說明
 
-### AI Provider Abstraction
+### AI 供應商抽象層
 
-`app/ai/factory.py` creates an AI client based on `AI_PROVIDER` env var:
-- `gemini` → `GeminiClient` (wraps `ChatGoogleGenerativeAI` via LangChain)
-- `lmstudio` → `LmStudioClient` (wraps `ChatOpenAI` pointed at local LM Studio endpoint)
+`app/ai/factory.py` 依 `AI_PROVIDER` 環境變數建立 AI 客戶端：
+- `gemini` → `GeminiClient`（透過 LangChain 封裝 `ChatGoogleGenerativeAI`）
+- `lmstudio` → `LmStudioClient`（透過 LangChain 封裝 `ChatOpenAI`，指向本機 LM Studio 端點）
 
-Both share the `BaseAILangchain` interface with `invoke()` and `chat()` methods.
+兩者皆實作 `BaseAILangchain` 介面，提供 `invoke()` 與 `chat()` 方法。
 
-Voice-to-text (`app/services/voice_service.py`) uses the `google-genai` SDK directly (not LangChain) to upload audio to Gemini Files API and transcribe to Traditional Chinese.
+語音轉文字（`app/services/voice_service.py`）直接使用 `google-genai` SDK（非 LangChain），將音訊上傳至 Gemini Files API 並轉錄為繁體中文。
 
-### Prompts
+### 提示詞
 
-`app/prompts/recommend_prompt_builder.py` builds structured prompts for AI recommendation explanations. `app/knowledge/textbook_knowledge.py` provides curated textbook descriptions injected into prompts via `app/services/textbook_service.py`.
+`app/prompts/recommend_prompt_builder.py` 為 AI 推薦說明建構結構化提示詞。`app/knowledge/textbook_knowledge.py` 提供精選的教科書描述，透過 `app/services/textbook_service.py` 注入至提示詞中。
 
-## Environment Variables
+## 環境變數
 
-Copy `.env.example` to `.env`. Key variables:
+將 `.env.example` 複製為 `.env`。主要變數如下：
 
-| Variable | Default | Notes |
+| 變數 | 預設值 | 說明 |
 |---|---|---|
-| `AI_PROVIDER` | `lmstudio` | `gemini` or `lmstudio` |
-| `GEMINI_API_KEY` | — | Required when using Gemini |
-| `GEMINI_MODEL_NAME` | `gemini-1.5-flash` | Gemini model ID |
-| `LMSTUDIO_BASE_URL` | `http://localhost:1234/v1` | LM Studio OpenAI-compatible endpoint |
-| `LMSTUDIO_MODEL_NAME` | `local-model` | Model name as shown in LM Studio |
+| `AI_PROVIDER` | `lmstudio` | `gemini` 或 `lmstudio` |
+| `GEMINI_API_KEY` | — | 使用 Gemini 時必填 |
+| `GEMINI_MODEL_NAME` | `gemini-1.5-flash` | Gemini 模型 ID |
+| `LMSTUDIO_BASE_URL` | `http://localhost:1234/v1` | LM Studio OpenAI 相容端點 |
+| `LMSTUDIO_MODEL_NAME` | `local-model` | LM Studio 中顯示的模型名稱 |
 
-Settings are loaded via Pydantic Settings in `app/core/config.py` with LRU caching (`get_settings()`).
+設定透過 `app/core/config.py` 中的 Pydantic Settings 載入，並使用 LRU 快取（`get_settings()`）。
 
-## Deployment
+## 部署
 
-Targets GCP Cloud Run. The `PORT` env var controls the uvicorn port (defaults to 8080 in Docker). The `feature/cloud` branch contains ongoing cloud infrastructure work; `develop` is the main integration branch.
+目標部署平台為 GCP Cloud Run。`PORT` 環境變數控制 uvicorn 埠號（Docker 中預設為 8080）。`feature/cloud` 分支包含進行中的雲端基礎設施工作；`develop` 為主要整合分支。
