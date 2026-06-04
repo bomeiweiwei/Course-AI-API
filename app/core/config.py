@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     azure_openai_api_key: str | None = None
     azure_openai_endpoint: str | None = None
+    azure_openai_deployment_name: str = "gpt-4o"
+    azure_openai_api_version: str = "2024-02-01"
 
     class Config:
         env_file = ".env"
